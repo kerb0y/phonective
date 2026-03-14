@@ -6,7 +6,13 @@ import { TestResult } from "./page";
 export default function HardwareTestRunner({ onComplete }: { onComplete: (res: TestResult) => void }) {
   const [cameraActive, setCameraActive] = useState(false);
   const [vibrating, setVibrating] = useState(false);
-  
+  const [vibrateSupported, setVibrateSupported] = useState(false);
+
+  // Detect vibration support client-side only — runs after hydration
+  useEffect(() => {
+    setVibrateSupported(typeof navigator !== "undefined" && "vibrate" in navigator);
+  }, []);
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -61,8 +67,8 @@ export default function HardwareTestRunner({ onComplete }: { onComplete: (res: T
         
         <div style={{ background: "var(--color-surface-3)", borderRadius: "0.75rem", padding: "1rem", border: "1px solid var(--color-border)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
           <div style={{ fontSize: "2rem", animation: vibrating ? "vibAnim 0.1s infinite alternate" : "none" }}>📳</div>
-          <button onClick={testVibration} style={{ padding: "0.5rem 1rem", borderRadius: "0.5rem", background: "var(--color-border)", color: "var(--color-text)", border: "none", cursor: ("vibrate" in navigator) ? "pointer" : "not-allowed", fontSize: "0.875rem" }}>
-            {("vibrate" in navigator) ? "Tes Motor Getar" : "Bukan Android / Tidak Didukung"}
+          <button onClick={testVibration} style={{ padding: "0.5rem 1rem", borderRadius: "0.5rem", background: "var(--color-border)", color: "var(--color-text)", border: "none", cursor: vibrateSupported ? "pointer" : "not-allowed", fontSize: "0.875rem" }}>
+            {vibrateSupported ? "Tes Motor Getar" : "Bukan Android / Tidak Didukung"}
           </button>
         </div>
       </div>

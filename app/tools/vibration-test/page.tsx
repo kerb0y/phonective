@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ToolLayout from "@/components/tools/ToolLayout";
 import { AlertTriangle } from "lucide-react";
 
@@ -22,7 +22,12 @@ const patterns: Pattern[] = [
 export default function VibrationTestPage() {
     const [status, setStatus] = useState<"idle" | "running" | "pass" | "fail" | "unsupported">("idle");
     const [activePattern, setActivePattern] = useState<string | null>(null);
-    const [supported] = useState(() => "vibrate" in navigator);
+    const [supported, setSupported] = useState(false);
+
+    // Detect support client-side only — navigator is not defined on the server
+    useEffect(() => {
+        setSupported(typeof navigator !== "undefined" && "vibrate" in navigator);
+    }, []);
 
     const vibrate = (pattern: Pattern) => {
         if (!supported) {
@@ -38,7 +43,7 @@ export default function VibrationTestPage() {
     const handleStart = () => vibrate(patterns[0]);
 
     const handleReset = () => {
-        navigator.vibrate(0); // stop any vibration
+        if (typeof navigator !== "undefined") navigator.vibrate(0); // stop any vibration
         setActivePattern(null);
         setStatus("idle");
     };
