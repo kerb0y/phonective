@@ -1,0 +1,38 @@
+# Auto-detect text files and normalize line endings to LF on checkout
+* text=auto
+
+# TypeScript / JavaScript
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+
+# Web assets
+*.css text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.md text eol=lf
+*.mdx text eol=lf
+*.html text eol=lf
+*.svg text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Config files
+.editorconfig text eol=lf
+.env.example text eol=lf
+Makefile text eol=lf
+
+# Binary files — do not modify
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
